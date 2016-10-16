@@ -10,7 +10,16 @@ If you would like to support the development of Tortuga, please consider becomin
 
 ## External Dependencies
 
+* [SDL 2.0](http://www.libsdl.org/) - Simple DirectMedia Layer API
+* [SDL_image 2.0](https://www.libsdl.org/projects/SDL_image/) - An SDL Extension for loading multiple image file formats
+* [SDL_ttf 2.0](https://www.libsdl.org/projects/SDL_ttf/) - An SDL extention for rendering fonts
+* [lua 5.3](http://www.lua.org/) - The lua programming language
+
 ## Tools
+
+## Using and Including
+
+* [Coolvetica Typeface](http://typodermicfonts.com/coolvetica/)
 
 ## Copyright
 

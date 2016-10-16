@@ -21,6 +21,8 @@
 */
 #include "example_scene.hpp"
 
+#include <iostream>
+
 ExampleScene::ExampleScene(lua_State* L) {
 	luaState = L;
 
@@ -28,10 +30,24 @@ ExampleScene::ExampleScene(lua_State* L) {
 	tileSheet.Load(GetRenderer(), "rsc/overworld.png", 32, 32);
 
 	pager.SetLuaState(luaState);
+
+	//setup the fonts
+	inputFont = TTF_OpenFont("rsc/coolvetica rg.ttf", 24);
+	textboxFont = TTF_OpenFont("rsc/coolvetica rg.ttf", 12);
+
+	if (!inputFont || !textboxFont) {
+		throw(std::runtime_error("Failed to load a font"));
+	}
+
+	//setup the textfield & textbox
+	textField.SetBounds({0, 0, 128, 12});
+	textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, "Testing....");
+	textBox.SetY(24);
 }
 
 ExampleScene::~ExampleScene() {
-	//
+	TTF_CloseFont(inputFont);
+	TTF_CloseFont(textboxFont);
 }
 
 //-------------------------
@@ -52,6 +68,8 @@ void ExampleScene::FrameEnd() {
 
 void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
 	image.DrawTo(renderer, 0, 0, .5, .5);
+	textField.DrawTo(renderer);
+	textBox.DrawTo(renderer);
 }
 
 //-------------------------
@@ -63,7 +81,10 @@ void ExampleScene::MouseMotion(SDL_MouseMotionEvent const& event) {
 }
 
 void ExampleScene::MouseButtonDown(SDL_MouseButtonEvent const& event) {
-	//
+	textField.MouseButtonDown(event);
+	if (textField.GetFocus()) {
+		std::cout << "Focus" << std::endl;
+	}
 }
 
 void ExampleScene::MouseButtonUp(SDL_MouseButtonEvent const& event) {
@@ -75,10 +96,31 @@ void ExampleScene::MouseWheel(SDL_MouseWheelEvent const& event) {
 }
 
 void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
-	//preference as a default
+	//text input
+//TODO: move text input to text input event
+//	if (textField.GetFocus()) {
+//		if (isprint(event.keysym.sym)) {
+//			textField.PushText(GetRenderer(), inputFont, SDL_Color{255, 255, 255, 255}, std::string( SDL_GetKeyName(event.keysym.sym) ));
+//		}
+//	}
+
+	//hotkeys
 	switch(event.keysym.sym) {
 		case SDLK_ESCAPE:
 			QuitEvent();
+		break;
+
+		case SDLK_RETURN:
+			//not focus
+			if (!textField.GetFocus()) {
+				textField.SetFocus(true);
+			}
+			//focus
+			else {
+				textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, textField.GetText());
+				textField.SetText(GetRenderer(), inputFont, SDL_Color{255,255,255,255}, std::string(""));
+				textField.SetFocus(false);
+			}
 		break;
 	}
 }

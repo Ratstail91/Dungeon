@@ -26,6 +26,7 @@
 
 #include "lua.hpp"
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 
 //TODO: do something with these
 constexpr int screenWidth = 800;

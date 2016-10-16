@@ -25,9 +25,13 @@
 
 #include "image.hpp"
 #include "region_pager_lua.hpp"
+#include "text_box.hpp"
+#include "text_field.hpp"
 #include "tile_sheet.hpp"
 
 #include "lua.hpp"
+
+#include "SDL2/SDL_ttf.h"
 
 class ExampleScene : public BaseScene {
 public:
@@ -56,4 +60,11 @@ private:
 	Image image;
 	RegionPagerLua pager;
 	TileSheet tileSheet;
+
+	TTF_Font* inputFont = nullptr;
+	TTF_Font* textboxFont = nullptr;
+
+	//text inputs
+	TextField textField;
+	TextBox textBox;
 };

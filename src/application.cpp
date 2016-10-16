@@ -63,6 +63,13 @@ void Application::Init(int argc, char* argv[]) {
 		throw(std::runtime_error("Failed to create the lua state"));
 	}
 	luaL_openlibs(luaState);
+
+	//setting up SDL2_ttf
+	if (TTF_Init()) {
+		std::ostringstream msg;
+		msg << "Failed to initialize SDL_ttf 2.0: " << SDL_GetError();
+		throw(std::runtime_error(msg.str()));
+	}
 }
 
 void Application::Proc() {
@@ -115,6 +122,7 @@ void Application::Proc() {
 
 void Application::Quit() {
 	//clean up after the program
+	TTF_Quit();
 	lua_close(luaState);
 	BaseScene::SetRenderer(nullptr);
 	SDL_DestroyRenderer(renderer);
