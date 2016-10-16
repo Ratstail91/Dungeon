@@ -3,4 +3,4 @@
 	url = https://github.com/krgamestudios/bin.git
 [submodule "TurtleGUI"]
 	path = TurtleGUI
-	url = https://github.com/Ratstail91/TurtleGUI.git
+	url = https://github.com/krgamestudios/TurtleGUI.git
