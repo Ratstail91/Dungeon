@@ -1,13 +1,17 @@
 #include directories
-INCLUDES+=.
+INCLUDES+=. ../TurtleGUI ../TurtleMap
 
 #libraries
 #the order of the $(LIBS) is important, at least for MinGW
-LIBS+=
+LIBS+=../libturtlegui.a ../libturtlemap.a
 ifeq ($(OS),Windows_NT)
 	LIBS+=-lmingw32
 endif
-LIBS+=-lSDL2main -lSDL2
+LIBS+=-lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -llua
+ifeq ($(shell uname), Linux)
+	#I don't know what this does, but Ubuntu needs it (dynamic linking for lua)
+	LIBS+=-ldl
+endif
 
 #flags
 CXXFLAGS+=-std=c++11 $(addprefix -I,$(INCLUDES))

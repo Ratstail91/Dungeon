@@ -23,9 +23,15 @@
 
 #include "base_scene.hpp"
 
+#include "image.hpp"
+#include "region_pager_lua.hpp"
+#include "tile_sheet.hpp"
+
+#include "lua.hpp"
+
 class ExampleScene : public BaseScene {
 public:
-	ExampleScene();
+	ExampleScene(lua_State* L);
 	~ExampleScene();
 
 	void RenderFrame(SDL_Renderer* renderer) override;
@@ -43,4 +49,11 @@ private:
 	void MouseWheel(SDL_MouseWheelEvent const& event) override;
 	void KeyDown(SDL_KeyboardEvent const& event) override;
 	void KeyUp(SDL_KeyboardEvent const& event) override;
+
+	//test members
+	lua_State* luaState = nullptr;
+
+	Image image;
+	RegionPagerLua pager;
+	TileSheet tileSheet;
 };

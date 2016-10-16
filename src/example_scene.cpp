@@ -21,8 +21,13 @@
 */
 #include "example_scene.hpp"
 
-ExampleScene::ExampleScene() {
-	//
+ExampleScene::ExampleScene(lua_State* L) {
+	luaState = L;
+
+	image.Load(GetRenderer(), "rsc/krstudios.png");
+	tileSheet.Load(GetRenderer(), "rsc/overworld.png", 32, 32);
+
+	pager.SetLuaState(luaState);
 }
 
 ExampleScene::~ExampleScene() {
@@ -46,7 +51,7 @@ void ExampleScene::FrameEnd() {
 }
 
 void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
-	//
+	image.DrawTo(renderer, 0, 0, .5, .5);
 }
 
 //-------------------------
