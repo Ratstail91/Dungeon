@@ -9,6 +9,7 @@ BINDIR=bin
 
 all: $(OUTDIR) binary
 	$(MAKE) -C TurtleGUI
+	$(MAKE) -C TurtleMap
 	$(MAKE) -C src
 
 debug: export CXXFLAGS+=-g
@@ -25,7 +26,7 @@ $(OUTDIR):
 
 clean:
 ifeq ($(OS),Windows_NT)
-	del /S /Q *.o *.a *.exe $(OUTDIR)\*.dll
+	$(RM) *.o *.a *.exe $(OUTDIR)\*.dll
 #	rmdir /S /Q $(OUTDIR)
 else ifeq ($(shell uname), Linux)
 	find . -type f -name '*.o' -exec rm -f -r -v {} \;

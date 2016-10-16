@@ -4,3 +4,6 @@
 [submodule "TurtleGUI"]
 	path = TurtleGUI
 	url = https://github.com/krgamestudios/TurtleGUI.git
+[submodule "TurtleMap"]
+	path = TurtleMap
+	url = https://github.com/krgamestudios/TurtleMap.git
