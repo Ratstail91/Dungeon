@@ -8,6 +8,7 @@ OUTDIR=out
 BINDIR=bin
 
 all: $(OUTDIR) binary
+	$(MAKE) -C TurtleGUI
 	$(MAKE) -C src
 
 debug: export CXXFLAGS+=-g
