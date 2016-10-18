@@ -21,6 +21,8 @@
 */
 #include "example_scene.hpp"
 
+#include "application.hpp"
+
 #include <iostream>
 
 ExampleScene::ExampleScene(lua_State* L) {
@@ -40,9 +42,10 @@ ExampleScene::ExampleScene(lua_State* L) {
 	}
 
 	//setup the textfield & textbox
-	textField.SetBounds({0, 0, 128, 12});
+	textField.SetBounds({0, 0, 128, 24});
+	textField.SetY(screenHeight - 36);
 	textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, "Testing....");
-	textBox.SetY(24);
+	textBox.SetY(screenHeight - 36 - 12*6);
 }
 
 ExampleScene::~ExampleScene() {
@@ -111,6 +114,7 @@ void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
 			//focus
 			else {
 				if (textField.GetText().length() > 0) {
+					luaL_dostring(luaState, textField.GetText().c_str());
 					textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, textField.GetText());
 					textField.SetText(GetRenderer(), inputFont, SDL_Color{255,255,255,255}, std::string(""));
 				}
