@@ -53,6 +53,7 @@ private:
 	void MouseWheel(SDL_MouseWheelEvent const& event) override;
 	void KeyDown(SDL_KeyboardEvent const& event) override;
 	void KeyUp(SDL_KeyboardEvent const& event) override;
+	void TextInput(SDL_TextInputEvent const& event);
 
 	//test members
 	lua_State* luaState = nullptr;

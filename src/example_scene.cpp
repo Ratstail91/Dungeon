@@ -96,14 +96,6 @@ void ExampleScene::MouseWheel(SDL_MouseWheelEvent const& event) {
 }
 
 void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
-	//text input
-//TODO: move text input to text input event
-//	if (textField.GetFocus()) {
-//		if (isprint(event.keysym.sym)) {
-//			textField.PushText(GetRenderer(), inputFont, SDL_Color{255, 255, 255, 255}, std::string( SDL_GetKeyName(event.keysym.sym) ));
-//		}
-//	}
-
 	//hotkeys
 	switch(event.keysym.sym) {
 		case SDLK_ESCAPE:
@@ -114,17 +106,34 @@ void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
 			//not focus
 			if (!textField.GetFocus()) {
 				textField.SetFocus(true);
+				SDL_StartTextInput();
 			}
 			//focus
 			else {
-				textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, textField.GetText());
-				textField.SetText(GetRenderer(), inputFont, SDL_Color{255,255,255,255}, std::string(""));
+				if (textField.GetText().length() > 0) {
+					textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, textField.GetText());
+					textField.SetText(GetRenderer(), inputFont, SDL_Color{255,255,255,255}, std::string(""));
+				}
 				textField.SetFocus(false);
+				SDL_StopTextInput();
+				while (textBox.GetContainer()->size() > 5) {
+					textBox.PopLines();
+				}
 			}
 		break;
+
+		case SDLK_BACKSPACE:
+			//easier than mucking about with SDL_TextEditEvent
+			if (textField.GetFocus()) {
+				textField.PopChars(GetRenderer(), inputFont, SDL_Color{255, 255, 255, 255}, 1);
+			}
 	}
 }
 
 void ExampleScene::KeyUp(SDL_KeyboardEvent const& event) {
 	//
+}
+
+void ExampleScene::TextInput(SDL_TextInputEvent const& event) {
+	textField.PushText(GetRenderer(), inputFont, SDL_Color{255, 255, 255, 255}, std::string(event.text));
 }

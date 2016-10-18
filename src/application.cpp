@@ -70,6 +70,9 @@ void Application::Init(int argc, char* argv[]) {
 		msg << "Failed to initialize SDL_ttf 2.0: " << SDL_GetError();
 		throw(std::runtime_error(msg.str()));
 	}
+
+	//BUGFIX
+	SDL_StopTextInput();
 }
 
 void Application::Proc() {
@@ -163,6 +166,10 @@ void Application::ProcessEvents() {
 
 			case SDL_KEYUP:
 				activeScene->KeyUp(event.key);
+			break;
+
+			case SDL_TEXTINPUT:
+				activeScene->TextInput(event.text);
 			break;
 
 			//TODO: joystick and controller events
