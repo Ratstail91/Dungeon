@@ -21,14 +21,24 @@
 */
 #include "example_scene.hpp"
 
+//TODO: remove this
 #include "application.hpp"
 
 #include <iostream>
+
+//TODO: find a fix for "black lines" bug caused by zooming
 
 ExampleScene::ExampleScene(lua_State* L) {
 	//setup the lua state
 	luaState = L;
 	regionPager.SetLuaState(luaState);
+
+	lua_pushlightuserdata(luaState, &regionPager);
+	lua_setglobal(luaState, "regionPager");
+
+	if (luaL_dofile(luaState, "rsc/setup.lua")) {
+		throw(std::runtime_error("Failed to run rsc/setup.lua"));
+	}
 
 	//setup the images
 	image.Load(GetRenderer(), "rsc/krstudios.png");
@@ -45,15 +55,10 @@ ExampleScene::ExampleScene(lua_State* L) {
 	//setup the textfield & textbox
 	textField.SetBounds({0, 0, 128, 24});
 	textField.SetY(screenHeight - 36);
-	textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, "Testing....");
 	textBox.SetY(screenHeight - 36 - 12*6);
 
 	//debugging
-	for (int i = 0; i < 20; i++) {
-		for (int j = 0; j < 20; j++) {
-			regionPager.SetTile(i, j, 0, 1);
-		}
-	}
+	//...
 }
 
 ExampleScene::~ExampleScene() {
@@ -78,6 +83,14 @@ void ExampleScene::FrameEnd() {
 }
 
 void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
+	//DEBUG: force the tiles into existance
+	//TODO: add camera.screenWidth
+	for (int i = camera.x; i < camera.x + screenWidth / camera.zoom; i += tileSheet.GetClipW()) {
+		for (int j = camera.y; j < camera.y + screenHeight / camera.zoom; j += tileSheet.GetClipH()) {
+			regionPager.GetRegion(i / tileSheet.GetClipW(), j / tileSheet.GetClipH());
+		}
+	}
+
 	//draw the map
 	for (auto& it : *regionPager.GetContainer()) {
 		tileSheet.DrawRegionTo(renderer, &it, camera.x, camera.y, camera.zoom, camera.zoom);
