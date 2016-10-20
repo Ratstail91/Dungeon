@@ -26,12 +26,13 @@
 #include <iostream>
 
 ExampleScene::ExampleScene(lua_State* L) {
+	//setup the lua state
 	luaState = L;
+	regionPager.SetLuaState(luaState);
 
+	//setup the images
 	image.Load(GetRenderer(), "rsc/krstudios.png");
 	tileSheet.Load(GetRenderer(), "rsc/overworld.png", 32, 32);
-
-	pager.SetLuaState(luaState);
 
 	//setup the fonts
 	inputFont = TTF_OpenFont("rsc/coolvetica rg.ttf", 24);
@@ -46,6 +47,13 @@ ExampleScene::ExampleScene(lua_State* L) {
 	textField.SetY(screenHeight - 36);
 	textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, "Testing....");
 	textBox.SetY(screenHeight - 36 - 12*6);
+
+	//debugging
+	for (int i = 0; i < 20; i++) {
+		for (int j = 0; j < 20; j++) {
+			regionPager.SetTile(i, j, 0, 1);
+		}
+	}
 }
 
 ExampleScene::~ExampleScene() {
@@ -70,7 +78,15 @@ void ExampleScene::FrameEnd() {
 }
 
 void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
-	image.DrawTo(renderer, 0, 0, .5, .5);
+	//draw the map
+	for (auto& it : *regionPager.GetContainer()) {
+		tileSheet.DrawRegionTo(renderer, &it, camera.x, camera.y, camera.zoom, camera.zoom);
+	}
+
+	//misc
+//	image.DrawTo(renderer, 0, 0, .5, .5);
+
+	//draw the terminal
 	textField.DrawTo(renderer);
 	textBox.DrawTo(renderer);
 }
@@ -80,7 +96,11 @@ void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
 //-------------------------
 
 void ExampleScene::MouseMotion(SDL_MouseMotionEvent const& event) {
-	//
+	//moving the camera
+	if (event.state & SDL_BUTTON_RMASK) {
+		camera.x -= event.xrel / camera.zoom;
+		camera.y -= event.yrel / camera.zoom;
+	}
 }
 
 void ExampleScene::MouseButtonDown(SDL_MouseButtonEvent const& event) {
@@ -95,7 +115,23 @@ void ExampleScene::MouseButtonUp(SDL_MouseButtonEvent const& event) {
 }
 
 void ExampleScene::MouseWheel(SDL_MouseWheelEvent const& event) {
-	//
+	//toward the user
+	if (event.y < 0) {
+		camera.zoom /= 1.1;
+	}
+
+	if (camera.zoom < 0.5) {
+		camera.zoom = 0.5;
+	}
+
+	//away from the user
+	if (event.y > 0) {
+		camera.zoom *= 1.1;
+	}
+
+	if (camera.zoom > 2.0) {
+		camera.zoom = 2.0;
+	}
 }
 
 void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {

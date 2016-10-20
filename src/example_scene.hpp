@@ -53,13 +53,19 @@ private:
 	void MouseWheel(SDL_MouseWheelEvent const& event) override;
 	void KeyDown(SDL_KeyboardEvent const& event) override;
 	void KeyUp(SDL_KeyboardEvent const& event) override;
-	void TextInput(SDL_TextInputEvent const& event);
+	void TextInput(SDL_TextInputEvent const& event) override;
+
+	//camera
+	struct Camera {
+		int x = 0, y = 0;
+		double zoom = 1.0;
+	} camera;
 
 	//test members
 	lua_State* luaState = nullptr;
 
 	Image image;
-	RegionPagerLua pager;
+	RegionPagerLua regionPager;
 	TileSheet tileSheet;
 
 	TTF_Font* inputFont = nullptr;
