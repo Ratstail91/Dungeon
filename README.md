@@ -2,6 +2,22 @@
 
 Dungeon Generator, designed to create pseudorandom dungeons for D&D 5e.
 
+## Planned Features
+
+* Tile placement
+* GUI tile selection
+* Normal doors/secret doors
+* Terrain, inclines, declines, etc.
+* Item placement
+* Monster placement
+* Trap placement
+* Light source placement/radius
+* CR options appropriate to PC levels
+* Appropriate Dungeon Dressing
+* Generate a "player version" of maps for roll20
+* City scape map, with houses acting as voids between streets
+* Optional grid lines
+
 ## Patreon
 
 If you would like to support the development of Tortuga, please consider becoming a patron below.
