@@ -64,14 +64,13 @@ private:
 	//test members
 	lua_State* luaState = nullptr;
 
-	Image image;
+	//tile members
 	RegionPagerLua regionPager;
 	TileSheet tileSheet;
 
+	//text inputs
 	TTF_Font* inputFont = nullptr;
 	TTF_Font* textboxFont = nullptr;
-
-	//text inputs
 	TextField textField;
 	TextBox textBox;
 };

@@ -26,22 +26,29 @@
 
 #include <iostream>
 
-//TODO: find a fix for "black lines" bug caused by zooming
+//TODO: have scripts work without c-style this parameters
 
 ExampleScene::ExampleScene(lua_State* L) {
 	//setup the lua state
 	luaState = L;
 	regionPager.SetLuaState(luaState);
 
+	//push the necessary variables
 	lua_pushlightuserdata(luaState, &regionPager);
 	lua_setglobal(luaState, "regionPager");
 
+	lua_pushlightuserdata(luaState, &tileSheet);
+	lua_setglobal(luaState, "tileSheet");
+
+	lua_pushlightuserdata(luaState, GetRenderer());
+	lua_setglobal(luaState, "_renderer");
+
+	//run the startup script
 	if (luaL_dofile(luaState, "rsc/setup.lua")) {
 		throw(std::runtime_error("Failed to run rsc/setup.lua"));
 	}
 
 	//setup the images
-	image.Load(GetRenderer(), "rsc/krstudios.png");
 	tileSheet.Load(GetRenderer(), "rsc/overworld.png", 32, 32);
 
 	//setup the fonts
@@ -96,9 +103,6 @@ void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
 		tileSheet.DrawRegionTo(renderer, &it, camera.x, camera.y, camera.zoom, camera.zoom);
 	}
 
-	//misc
-//	image.DrawTo(renderer, 0, 0, .5, .5);
-
 	//draw the terminal
 	textField.DrawTo(renderer);
 	textBox.DrawTo(renderer);
@@ -118,9 +122,6 @@ void ExampleScene::MouseMotion(SDL_MouseMotionEvent const& event) {
 
 void ExampleScene::MouseButtonDown(SDL_MouseButtonEvent const& event) {
 	textField.MouseButtonDown(event);
-	if (textField.GetFocus()) {
-		std::cout << "Focus" << std::endl;
-	}
 }
 
 void ExampleScene::MouseButtonUp(SDL_MouseButtonEvent const& event) {
@@ -130,7 +131,7 @@ void ExampleScene::MouseButtonUp(SDL_MouseButtonEvent const& event) {
 void ExampleScene::MouseWheel(SDL_MouseWheelEvent const& event) {
 	//toward the user
 	if (event.y < 0) {
-		camera.zoom /= 1.1;
+		camera.zoom /= 2;
 	}
 
 	if (camera.zoom < 0.5) {
@@ -139,11 +140,11 @@ void ExampleScene::MouseWheel(SDL_MouseWheelEvent const& event) {
 
 	//away from the user
 	if (event.y > 0) {
-		camera.zoom *= 1.1;
+		camera.zoom *= 2;
 	}
 
-	if (camera.zoom > 2.0) {
-		camera.zoom = 2.0;
+	if (camera.zoom > 4.0) {
+		camera.zoom = 4.0;
 	}
 }
 

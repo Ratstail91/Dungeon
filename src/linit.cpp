@@ -38,6 +38,7 @@
 
 #include "region_api.hpp"
 #include "region_pager_api.hpp"
+#include "tile_sheet_api.hpp"
 
 //these libs are loaded by lua.c and are readily available to any Lua program
 static const luaL_Reg loadedlibs[] = {
@@ -59,6 +60,7 @@ static const luaL_Reg loadedlibs[] = {
 static const luaL_Reg preloadedlibs[] = {
 	{TORTUGA_REGION_API, openRegionAPI},
 	{TORTUGA_REGION_PAGER_API, openRegionPagerAPI},
+	{TORTUGA_TILE_SHEET_API, openTileSheetAPI},
 	{NULL, NULL}
 };
 
