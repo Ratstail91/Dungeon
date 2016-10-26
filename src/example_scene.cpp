@@ -29,11 +29,14 @@
 //TODO: have scripts work without c-style this parameters
 
 ExampleScene::ExampleScene(lua_State* L) {
+	//load the defaults
+	tileSheet.Load(GetRenderer(), "rsc/overworld.png", 32, 32);
+
 	//setup the lua state
 	luaState = L;
 	regionPager.SetLuaState(luaState);
 
-	//push the necessary variables
+	//push the necessary variables to the lua state
 	lua_pushlightuserdata(luaState, &regionPager);
 	lua_setglobal(luaState, "regionPager");
 
@@ -47,9 +50,6 @@ ExampleScene::ExampleScene(lua_State* L) {
 	if (luaL_dofile(luaState, "rsc/setup.lua")) {
 		throw(std::runtime_error("Failed to run rsc/setup.lua"));
 	}
-
-	//setup the images
-	tileSheet.Load(GetRenderer(), "rsc/overworld.png", 32, 32);
 
 	//setup the fonts
 	inputFont = TTF_OpenFont("rsc/coolvetica rg.ttf", 24);
