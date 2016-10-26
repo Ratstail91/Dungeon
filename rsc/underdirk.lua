@@ -86,7 +86,8 @@ end
 function underdirk.GenRoom(rp, x, y, w, h)
 	for i = x, x+w-1 do
 		for j = y, y+h-1 do
-			regionPagerAPI.SetTile(rp, i, j, 1, underdirk.open)
+			--NOTE: zero indexing is used in RegionPager API, but not Region API.
+			regionPagerAPI.SetTile(rp, i, j, 0, underdirk.open)
 		end
 	end
 

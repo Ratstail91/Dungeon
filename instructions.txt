@@ -1,0 +1,22 @@
+This is the README for Dungeon's demo build. The source code is available at:
+
+   https://github.com/Ratstail91/Dungeon
+
+The current build may have bugs, missing features, bugs masquerading as
+features, etc. You can report a bug/feature here:
+
+   https://github.com/Ratstail91/Dungeon/issues
+
+-------------------------
+Instructions For Setup
+-------------------------
+
+Simply click to run.
+
+It's possible to run lua scripts through the console. To activate the console,
+press enter, then start typing lua code.
+
+-------------------------
+TODO: a full API documentation
+-------------------------
+

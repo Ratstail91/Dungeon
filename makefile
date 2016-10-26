@@ -15,7 +15,18 @@ all: $(OUTDIR) binary
 debug: export CXXFLAGS+=-g
 debug: clean all
 
+release: export CXXFLAGS+=-static-libgcc -static-libstdc++
+release: clean all package
+
 #For use on my machine ONLY
+package:
+ifeq ($(OS),Windows_NT)
+	rar a -r -ep Dungeon-win.rar $(OUTDIR)/*.exe  $(BINDIR)/*.dll
+	rar a -r Dungeon-win.rar rsc/* copyright.txt instructions.txt
+else ifeq ($(shell uname), Linux)
+	tar -C $(OUTDIR) -zcvf Dungeon-linux.tar dungeon ../rsc ../copyright.txt ../instructions.txt
+endif
+
 binary: $(OUTDIR)
 ifeq ($(OS),Windows_NT)
 	xcopy /Y $(BINDIR)\\*.dll $(OUTDIR)

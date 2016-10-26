@@ -2,6 +2,10 @@
 
 Dungeon Generator, designed to create pseudorandom dungeons for D&D 5e.
 
+## Releases
+
+* The most recent stable build for Windows can be found [here](https://dl.dropboxusercontent.com/u/46669050/Dungeon-win.rar).
+
 ## Planned Features
 
 * Tile placement
@@ -22,7 +26,7 @@ Dungeon Generator, designed to create pseudorandom dungeons for D&D 5e.
 
 ## Patreon
 
-If you would like to support the development of Tortuga, please consider becoming a patron below.
+If you would like to support the development of Dungeon, please consider becoming a patron below.
 
 * [My Patreon Page](https://patreon.com/user?u=2811779)
 
