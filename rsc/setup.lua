@@ -23,7 +23,7 @@ print("Attempting to generate a dungeon")
 local hearts = {}
 
 hearts[1] = underdirk.GenerateDungeon(regionPager, 1, 1, 50, 50, 10)
-hearts[2] = underdirk.GenerateDungeon(regionPager, 100, 1, 50, 50, 10)
+hearts[2] = underdirk.GenerateDungeon(regionPager, 50, 1, 50, 50, 10)
 
 underdirk.GenPath(regionPager, hearts[1][1], hearts[1][2], hearts[2][1], hearts[2][2])
 

@@ -17,6 +17,8 @@ Dungeon Generator, designed to create pseudorandom dungeons for D&D 5e.
 * Generate a "player version" of maps for roll20
 * City scape map, with houses acting as voids between streets
 * Optional grid lines
+* Wider corridors
+* Random generator seeds
 
 ## Patreon
 

@@ -92,11 +92,11 @@ void ExampleScene::FrameEnd() {
 void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
 	//DEBUG: force the tiles into existance
 	//TODO: add camera.screenWidth
-	for (int i = camera.x; i < camera.x + screenWidth / camera.zoom; i += tileSheet.GetClipW()) {
-		for (int j = camera.y; j < camera.y + screenHeight / camera.zoom; j += tileSheet.GetClipH()) {
-			regionPager.GetRegion(i / tileSheet.GetClipW(), j / tileSheet.GetClipH());
-		}
-	}
+//	for (int i = camera.x; i < camera.x + screenWidth / camera.zoom; i += tileSheet.GetClipW()) {
+//		for (int j = camera.y; j < camera.y + screenHeight / camera.zoom; j += tileSheet.GetClipH()) {
+//			regionPager.GetRegion(i / tileSheet.GetClipW(), j / tileSheet.GetClipH());
+//		}
+//	}
 
 	//draw the map
 	for (auto& it : *regionPager.GetContainer()) {
@@ -134,8 +134,8 @@ void ExampleScene::MouseWheel(SDL_MouseWheelEvent const& event) {
 		camera.zoom /= 2;
 	}
 
-	if (camera.zoom < 0.5) {
-		camera.zoom = 0.5;
+	if (camera.zoom < 0.25) {
+		camera.zoom = 0.25;
 	}
 
 	//away from the user
