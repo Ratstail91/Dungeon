@@ -33,6 +33,15 @@ local underdirk = {}
 function underdirk.Sqr(x) return x*x end
 function underdirk.Dist(x, y, i, j) return math.sqrt(underdirk.Sqr(x - i) + mapMaker.Sqr(y - j)) end
 
+function underdirk.GThenSwitch(a, b)
+	--BUGFIX: This resolves a problem with the for loop and iterating through paths, ensuring that they iterate upwards
+	if a > b then
+		return b, a
+	else
+		return a, b
+	end
+end
+
 --tile macros, mapped to the tilesheet "dungeon_sheet.png"
 underdirk.wall		= 1
 underdirk.open		= 2
@@ -58,6 +67,80 @@ function underdirk.Blank(r)
 end
 
 --TODO: proper generator algorithm
+function underdirk.GenerateDungeon(rp, x, y, w, h, n)
+	heartList = {}
+
+	--generate rooms
+	for i = 1, n do
+		heartList[i] = underdirk.GenRoom(rp, math.random(x,x+w), math.random(y,y+h), math.random(3, 10), math.random(3,10))
+	end
+
+	--generate paths between rooms
+	for i = 1, n-1 do
+		underdirk.GenPath(rp, heartList[i][1], heartList[i][2], heartList[i+1][1], heartList[i+1][2])
+	end
+
+	return heartList[1]
+end
+
+function underdirk.GenRoom(rp, x, y, w, h)
+	for i = x, x+w-1 do
+		for j = y, y+h-1 do
+			regionPagerAPI.SetTile(rp, i, j, 1, underdirk.open)
+		end
+	end
+
+	return {math.random(x, x+w-1), math.random(y, y+h-1)}
+end
+
+--GenPath generates the longest path first, wich is why it's split into three parts
+
+function underdirk.GenPath(rp, x1, y1, x2, y2)
+--	print("path with", x1, y1, x2, y2)
+	if math.abs(x2-x1) > math.abs(y2-y1) then
+		return underdirk.GenPathX(rp, x1, y1, x2, y2)
+	else
+		return underdirk.GenPathY(rp, x1, y1, x2, y2)
+	end
+end
+
+function underdirk.GenPathX(rp, x1, y1, x2, y2)
+	--BUGFIX
+	x1s, x2s = underdirk.GThenSwitch(x1, x2)
+	y1s, y2s = underdirk.GThenSwitch(y1, y2)
+
+	--generate a simple path between two coordinates, starting with cardinal X
+	for i = x1s, x2s do
+		regionPagerAPI.SetTile(rp, i, y1, 1, underdirk.open)
+--		io.write("x")
+	end
+
+	for j = y1s, y2s do
+		regionPagerAPI.SetTile(rp, x2, j, 1, underdirk.open)
+--		io.write("y")
+	end
+--	io.write("+\n")
+end
+
+function underdirk.GenPathY(rp, x1, y1, x2, y2)
+	--BUGFIX
+	x1s, x2s = underdirk.GThenSwitch(x1, x2)
+	y1s, y2s = underdirk.GThenSwitch(y1, y2)
+
+	--generate a simple path between two coordinates, starting with cardinal Y
+	for j = y1s, y2s do
+		regionPagerAPI.SetTile(rp, x1, j, 1, underdirk.open)
+--		io.write("y")
+	end
+
+--	io.write("(", y1, ",", y2, ")")
+
+	for i = x1s, x2s do
+		regionPagerAPI.SetTile(rp, i, y2, 1, underdirk.open)
+--		io.write("x")
+	end
+--	io.write("-\n")
+end
 
 --finally
 return underdirk
