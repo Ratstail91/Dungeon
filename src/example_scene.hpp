@@ -30,6 +30,7 @@
 #include "text_box.hpp"
 #include "text_field.hpp"
 #include "tile_sheet.hpp"
+#include "tile_sheet_api.hpp"
 
 #include "lua.hpp"
 
