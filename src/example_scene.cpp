@@ -124,8 +124,23 @@ void ExampleScene::MouseMotion(SDL_MouseMotionEvent const& event) {
 	}
 
 	if (event.state & SDL_BUTTON_LMASK) {
-		int tileX = (event.x / camera.zoom + camera.x) / tileSheet.GetClipW();
-		int tileY = (event.y / camera.zoom + camera.y) / tileSheet.GetClipH();
+		int tileX = (event.x / camera.zoom + camera.x);
+		int tileY = (event.y / camera.zoom + camera.y);
+
+		//BUGFIX: This fixes an off-by-one error
+		if (tileX >= 0) {
+			tileX = tileX / tileSheet.GetClipW();
+		}
+		else {
+			tileX = tileX / tileSheet.GetClipW() - 1;
+		}
+
+		if (tileY >= 0) {
+			tileY = tileY / tileSheet.GetClipH();
+		}
+		else {
+			tileY = tileY / tileSheet.GetClipH() - 1;
+		}
 
 		regionPager.SetTile(tileX, tileY, cursor.layerSelection, cursor.tileSelection);
 	}
@@ -136,8 +151,23 @@ void ExampleScene::MouseButtonDown(SDL_MouseButtonEvent const& event) {
 //	textField.MouseButtonDown(event);
 
 	if (event.button == SDL_BUTTON_LEFT) {
-		int tileX = (event.x / camera.zoom + camera.x) / tileSheet.GetClipW();
-		int tileY = (event.y / camera.zoom + camera.y) / tileSheet.GetClipH();
+		int tileX = (event.x / camera.zoom + camera.x);
+		int tileY = (event.y / camera.zoom + camera.y);
+
+		//BUGFIX: This fixes an off-by-one error
+		if (tileX >= 0) {
+			tileX = tileX / tileSheet.GetClipW();
+		}
+		else {
+			tileX = tileX / tileSheet.GetClipW() - 1;
+		}
+
+		if (tileY >= 0) {
+			tileY = tileY / tileSheet.GetClipH();
+		}
+		else {
+			tileY = tileY / tileSheet.GetClipH() - 1;
+		}
 
 		regionPager.SetTile(tileX, tileY, cursor.layerSelection, cursor.tileSelection);
 	}
