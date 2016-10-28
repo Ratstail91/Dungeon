@@ -6,6 +6,7 @@ print("package path")
 package.path = package.path .. ";rsc/?.lua"
 
 print("APIs")
+cursorAPI = require("cursor")
 regionAPI = require("region")
 regionPagerAPI = require("region_pager")
 tileSheetAPI = require("tile_sheet")

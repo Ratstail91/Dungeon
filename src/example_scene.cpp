@@ -46,6 +46,9 @@ ExampleScene::ExampleScene(lua_State* L) {
 	lua_pushlightuserdata(luaState, GetRenderer());
 	lua_setglobal(luaState, "_renderer");
 
+	lua_pushlightuserdata(luaState, &cursor);
+	lua_setglobal(luaState, CURSOR_NAME);
+
 	//run the startup script
 	if (luaL_dofile(luaState, "rsc/setup.lua")) {
 		throw(std::runtime_error("Failed to run rsc/setup.lua"));
@@ -115,13 +118,29 @@ void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
 void ExampleScene::MouseMotion(SDL_MouseMotionEvent const& event) {
 	//moving the camera
 	if (event.state & SDL_BUTTON_RMASK) {
+		//note: zoom is reflected in coordinates
 		camera.x -= event.xrel / camera.zoom;
 		camera.y -= event.yrel / camera.zoom;
+	}
+
+	if (event.state & SDL_BUTTON_LMASK) {
+		int tileX = (event.x / camera.zoom + camera.x) / tileSheet.GetClipW();
+		int tileY = (event.y / camera.zoom + camera.y) / tileSheet.GetClipH();
+
+		regionPager.SetTile(tileX, tileY, cursor.layerSelection, cursor.tileSelection);
 	}
 }
 
 void ExampleScene::MouseButtonDown(SDL_MouseButtonEvent const& event) {
-	textField.MouseButtonDown(event);
+	//NOTE: since this is an editor, I've disabled the click functionality for the terminal
+//	textField.MouseButtonDown(event);
+
+	if (event.button == SDL_BUTTON_LEFT) {
+		int tileX = (event.x / camera.zoom + camera.x) / tileSheet.GetClipW();
+		int tileY = (event.y / camera.zoom + camera.y) / tileSheet.GetClipH();
+
+		regionPager.SetTile(tileX, tileY, cursor.layerSelection, cursor.tileSelection);
+	}
 }
 
 void ExampleScene::MouseButtonUp(SDL_MouseButtonEvent const& event) {

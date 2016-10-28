@@ -112,12 +112,12 @@ function underdirk.GenPathX(rp, x1, y1, x2, y2)
 
 	--generate a simple path between two coordinates, starting with cardinal X
 	for i = x1s, x2s do
-		regionPagerAPI.SetTile(rp, i, y1, 1, underdirk.open)
+		regionPagerAPI.SetTile(rp, i, y1, 0, underdirk.open)
 --		io.write("x")
 	end
 
 	for j = y1s, y2s do
-		regionPagerAPI.SetTile(rp, x2, j, 1, underdirk.open)
+		regionPagerAPI.SetTile(rp, x2, j, 0, underdirk.open)
 --		io.write("y")
 	end
 --	io.write("+\n")
@@ -130,14 +130,14 @@ function underdirk.GenPathY(rp, x1, y1, x2, y2)
 
 	--generate a simple path between two coordinates, starting with cardinal Y
 	for j = y1s, y2s do
-		regionPagerAPI.SetTile(rp, x1, j, 1, underdirk.open)
+		regionPagerAPI.SetTile(rp, x1, j, 0, underdirk.open)
 --		io.write("y")
 	end
 
 --	io.write("(", y1, ",", y2, ")")
 
 	for i = x1s, x2s do
-		regionPagerAPI.SetTile(rp, i, y2, 1, underdirk.open)
+		regionPagerAPI.SetTile(rp, i, y2, 0, underdirk.open)
 --		io.write("x")
 	end
 --	io.write("-\n")

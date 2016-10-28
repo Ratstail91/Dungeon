@@ -36,6 +36,7 @@
 
 #include "lua.hpp"
 
+#include "cursor_api.hpp"
 #include "region_api.hpp"
 #include "region_pager_api.hpp"
 #include "tile_sheet_api.hpp"
@@ -58,6 +59,7 @@ static const luaL_Reg loadedlibs[] = {
 
 //these libs are preloaded and must be required before used
 static const luaL_Reg preloadedlibs[] = {
+	{CURSOR_API, openCursorAPI},
 	{TORTUGA_REGION_API, openRegionAPI},
 	{TORTUGA_REGION_PAGER_API, openRegionPagerAPI},
 	{TORTUGA_TILE_SHEET_API, openTileSheetAPI},

@@ -23,6 +23,8 @@
 
 #include "base_scene.hpp"
 
+#include "cursor.hpp"
+#include "cursor_api.hpp"
 #include "image.hpp"
 #include "region_pager_lua.hpp"
 #include "text_box.hpp"
@@ -57,9 +59,12 @@ private:
 
 	//camera
 	struct Camera {
-		int x = 0, y = 0;
+		double x = 0, y = 0;
 		double zoom = 1.0;
 	} camera;
+
+	//selection
+	Cursor cursor;
 
 	//test members
 	lua_State* luaState = nullptr;
