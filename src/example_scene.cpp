@@ -44,7 +44,7 @@ ExampleScene::ExampleScene(lua_State* L) {
 	lua_setglobal(luaState, "tileSheet");
 
 	lua_pushlightuserdata(luaState, GetRenderer());
-	lua_setglobal(luaState, "_renderer");
+	lua_setglobal(luaState, RENDERER_NAME);
 
 	lua_pushlightuserdata(luaState, &cursor);
 	lua_setglobal(luaState, CURSOR_NAME);

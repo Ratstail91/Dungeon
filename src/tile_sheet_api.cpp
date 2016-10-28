@@ -29,7 +29,7 @@ static int load(lua_State* L) {
 		//TODO: error
 		return 0;
 	}
-	lua_getglobal(L, "_renderer"); //TODO: (0) this could be the answer
+	lua_getglobal(L, RENDERER_NAME); //TODO: (0) this could be the answer
 	sheet->Load(
 		static_cast<SDL_Renderer*>(lua_touserdata(L, -1)),
 		lua_tostring(L, 2),
