@@ -24,47 +24,49 @@
 #include "tile_sheet.hpp"
 
 static int load(lua_State* L) {
-	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, 1));
-	if (lua_gettop(L) != 4) {
-		//TODO: error
-		return 0;
-	}
-	lua_getglobal(L, RENDERER_NAME); //TODO: (0) this could be the answer
+	lua_getglobal(L, TILESHEET_NAME);
+	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, -1));
+	lua_getglobal(L, RENDERER_NAME);
 	sheet->Load(
 		static_cast<SDL_Renderer*>(lua_touserdata(L, -1)),
-		lua_tostring(L, 2),
-		lua_tointeger(L, 3),
-		lua_tointeger(L, 4)
+		lua_tostring(L, 1),
+		lua_tointeger(L, 2),
+		lua_tointeger(L, 3)
 			);
 	return 0;
 }
 
 static int free(lua_State* L) {
-	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, 1));
+	lua_getglobal(L, TILESHEET_NAME);
+	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, -1));
 	sheet->Free();
 	return 0;
 }
 
 static int getCountX(lua_State* L) {
-	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, 1));
+	lua_getglobal(L, TILESHEET_NAME);
+	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, -1));
 	lua_pushinteger(L, sheet->GetCountX());
 	return 1;
 }
 
 static int getCountY(lua_State* L) {
-	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, 1));
+	lua_getglobal(L, TILESHEET_NAME);
+	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, -1));
 	lua_pushinteger(L, sheet->GetCountY());
 	return 1;
 }
 
 static int getTileW(lua_State* L) {
-	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, 1));
+	lua_getglobal(L, TILESHEET_NAME);
+	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, -1));
 	lua_pushinteger(L, sheet->GetTileW());
 	return 1;
 }
 
 static int getTileH(lua_State* L) {
-	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, 1));
+	lua_getglobal(L, TILESHEET_NAME);
+	TileSheet* sheet = static_cast<TileSheet*>(lua_touserdata(L, -1));
 	lua_pushinteger(L, sheet->GetTileH());
 	return 1;
 }

@@ -57,7 +57,7 @@ underdirk.stairsed	= 10
 --blank backgrounds
 function underdirk.Blank(r)
 	--debug
-	io.write("underdirk:Blank(", regionAPI.GetX(r), ", ", regionAPI.GetY(r), ")\n")
+--	io.write("underdirk:Blank(", regionAPI.GetX(r), ", ", regionAPI.GetY(r), ")\n")
 
 	for i = 1, regionAPI.GetWidth(r) do
 		for j = 1, regionAPI.GetHeight(r) do

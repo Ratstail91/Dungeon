@@ -16,7 +16,7 @@ mapMaker = require("map_maker")
 underdirk = require("underdirk")
 
 print("Attempting to set the map components")
-tileSheetAPI.Load(tileSheet, "rsc/dungeon_sheet.png", 32, 32)
+tileSheetAPI.Load("rsc/dungeon_sheet.png", 32, 32)
 regionPagerAPI.SetOnCreate(regionPager, underdirk.Blank)
 
 print("Attempting to generate a dungeon")

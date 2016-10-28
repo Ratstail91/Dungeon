@@ -41,7 +41,7 @@ ExampleScene::ExampleScene(lua_State* L) {
 	lua_setglobal(luaState, "regionPager");
 
 	lua_pushlightuserdata(luaState, &tileSheet);
-	lua_setglobal(luaState, "tileSheet");
+	lua_setglobal(luaState, TILESHEET_NAME);
 
 	lua_pushlightuserdata(luaState, GetRenderer());
 	lua_setglobal(luaState, RENDERER_NAME);

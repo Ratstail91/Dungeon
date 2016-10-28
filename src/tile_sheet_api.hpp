@@ -25,5 +25,6 @@
 
 //TODO: (1) change the following line to remove reference to Tortuga
 #define RENDERER_NAME "_renderer"
+#define TILESHEET_NAME "_tilesheet"
 #define TORTUGA_TILE_SHEET_API "tile_sheet"
 LUAMOD_API int openTileSheetAPI(lua_State* L);
