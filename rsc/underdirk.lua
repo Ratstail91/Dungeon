@@ -67,27 +67,27 @@ function underdirk.Blank(r)
 end
 
 --TODO: proper generator algorithm
-function underdirk.GenerateDungeon(rp, x, y, w, h, n)
+function underdirk.GenerateDungeon(x, y, w, h, n)
 	heartList = {}
 
 	--generate rooms
 	for i = 1, n do
-		heartList[i] = underdirk.GenRoom(rp, math.random(x,x+w), math.random(y,y+h), math.random(3, 10), math.random(3,10))
+		heartList[i] = underdirk.GenRoom(math.random(x,x+w), math.random(y,y+h), math.random(3, 10), math.random(3,10))
 	end
 
 	--generate paths between rooms
 	for i = 1, n-1 do
-		underdirk.GenPath(rp, heartList[i][1], heartList[i][2], heartList[i+1][1], heartList[i+1][2])
+		underdirk.GenPath(heartList[i][1], heartList[i][2], heartList[i+1][1], heartList[i+1][2])
 	end
 
 	return heartList[1]
 end
 
-function underdirk.GenRoom(rp, x, y, w, h)
+function underdirk.GenRoom(x, y, w, h)
 	for i = x, x+w-1 do
 		for j = y, y+h-1 do
 			--NOTE: zero indexing is used in RegionPager API, but not Region API.
-			regionPagerAPI.SetTile(rp, i, j, 0, underdirk.open)
+			regionPagerAPI.SetTile(i, j, 0, underdirk.open)
 		end
 	end
 
@@ -96,16 +96,16 @@ end
 
 --GenPath generates the longest path first, wich is why it's split into three parts
 
-function underdirk.GenPath(rp, x1, y1, x2, y2)
+function underdirk.GenPath(x1, y1, x2, y2)
 --	print("path with", x1, y1, x2, y2)
 	if math.abs(x2-x1) > math.abs(y2-y1) then
-		return underdirk.GenPathX(rp, x1, y1, x2, y2)
+		return underdirk.GenPathX(x1, y1, x2, y2)
 	else
-		return underdirk.GenPathY(rp, x1, y1, x2, y2)
+		return underdirk.GenPathY(x1, y1, x2, y2)
 	end
 end
 
-function underdirk.GenPathX(rp, x1, y1, x2, y2)
+function underdirk.GenPathX(x1, y1, x2, y2)
 	local x1s
 	local x2s
 	local y1s
@@ -117,18 +117,18 @@ function underdirk.GenPathX(rp, x1, y1, x2, y2)
 
 	--generate a simple path between two coordinates, starting with cardinal X
 	for i = x1s, x2s do
-		regionPagerAPI.SetTile(rp, i, y1, 0, underdirk.open)
+		regionPagerAPI.SetTile(i, y1, 0, underdirk.open)
 --		io.write("x")
 	end
 
 	for j = y1s, y2s do
-		regionPagerAPI.SetTile(rp, x2, j, 0, underdirk.open)
+		regionPagerAPI.SetTile(x2, j, 0, underdirk.open)
 --		io.write("y")
 	end
 --	io.write("+\n")
 end
 
-function underdirk.GenPathY(rp, x1, y1, x2, y2)
+function underdirk.GenPathY(x1, y1, x2, y2)
 	local x1s
 	local x2s
 	local y1s
@@ -140,14 +140,14 @@ function underdirk.GenPathY(rp, x1, y1, x2, y2)
 
 	--generate a simple path between two coordinates, starting with cardinal Y
 	for j = y1s, y2s do
-		regionPagerAPI.SetTile(rp, x1, j, 0, underdirk.open)
+		regionPagerAPI.SetTile(x1, j, 0, underdirk.open)
 --		io.write("y")
 	end
 
 --	io.write("(", y1, ",", y2, ")")
 
 	for i = x1s, x2s do
-		regionPagerAPI.SetTile(rp, i, y2, 0, underdirk.open)
+		regionPagerAPI.SetTile(i, y2, 0, underdirk.open)
 --		io.write("x")
 	end
 --	io.write("-\n")

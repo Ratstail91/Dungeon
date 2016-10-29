@@ -26,6 +26,7 @@
 #include "cursor.hpp"
 #include "cursor_api.hpp"
 #include "image.hpp"
+#include "region_pager_api.hpp"
 #include "region_pager_lua.hpp"
 #include "text_box.hpp"
 #include "text_field.hpp"

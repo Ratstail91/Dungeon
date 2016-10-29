@@ -38,7 +38,7 @@ ExampleScene::ExampleScene(lua_State* L) {
 
 	//push the necessary variables to the lua state
 	lua_pushlightuserdata(luaState, &regionPager);
-	lua_setglobal(luaState, "regionPager");
+	lua_setglobal(luaState, REGION_PAGER_NAME);
 
 	lua_pushlightuserdata(luaState, &tileSheet);
 	lua_setglobal(luaState, TILESHEET_NAME);
@@ -72,6 +72,21 @@ ExampleScene::ExampleScene(lua_State* L) {
 }
 
 ExampleScene::~ExampleScene() {
+	//wipe the variables from the lua state
+	lua_pushnil(luaState);
+	lua_setglobal(luaState, REGION_PAGER_NAME);
+
+	lua_pushnil(luaState);
+	lua_setglobal(luaState, TILESHEET_NAME);
+
+	lua_pushnil(luaState);
+	lua_setglobal(luaState, RENDERER_NAME);
+
+	lua_pushnil(luaState);
+	lua_setglobal(luaState, CURSOR_NAME);
+
+
+	//close the APIs
 	TTF_CloseFont(inputFont);
 	TTF_CloseFont(textboxFont);
 }
