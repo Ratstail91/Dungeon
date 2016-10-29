@@ -106,6 +106,11 @@ function underdirk.GenPath(rp, x1, y1, x2, y2)
 end
 
 function underdirk.GenPathX(rp, x1, y1, x2, y2)
+	local x1s
+	local x2s
+	local y1s
+	local y2s
+
 	--BUGFIX
 	x1s, x2s = underdirk.GThenSwitch(x1, x2)
 	y1s, y2s = underdirk.GThenSwitch(y1, y2)
@@ -124,6 +129,11 @@ function underdirk.GenPathX(rp, x1, y1, x2, y2)
 end
 
 function underdirk.GenPathY(rp, x1, y1, x2, y2)
+	local x1s
+	local x2s
+	local y1s
+	local y2s
+
 	--BUGFIX
 	x1s, x2s = underdirk.GThenSwitch(x1, x2)
 	y1s, y2s = underdirk.GThenSwitch(y1, y2)
