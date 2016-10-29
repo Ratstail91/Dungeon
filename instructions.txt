@@ -11,12 +11,31 @@ features, etc. You can report a bug/feature here:
 Instructions For Setup
 -------------------------
 
-Simply click to run.
+Simply click to run. Once it's running, left click to change a tile, and right
+click and drag to move the camera around. You can also zoom in and out using
+the mouse wheel.
 
 It's possible to run lua scripts through the console. To activate the console,
 press enter, then start typing lua code.
 
--------------------------
-TODO: a full API documentation
--------------------------
+startup.lua opens and saves the main APIs into their default names. To select a
+tile from the loaded tilesheet, type:
 
+>	cursorAPI.SetTile(x)
+
+Where "x" is the index of the tile you want to use. Index 0 means blank, index
+1 means the tile at the top left, 2 is the next along the top, etc.
+
+To load a new tile sheet from the scripts, type:
+
+>	tileSheetAPI.Load(fname, w, h)
+
+Where fname is the filename of the tileset you wish to load, and w & h are the
+width and height of the tiles respectfully.
+
+There are a number of other vestigial features that are active, but unused in
+practice such as tile layers. These features may be used properly later.
+
+-------------------------
+TODO: (2) Full API documentation here
+-------------------------
