@@ -13,19 +13,25 @@ tileSheetAPI = require("tile_sheet")
 
 print("map generators")
 mapMaker = require("map_maker")
-randomRooms = require("random_rooms")
+--randomRooms = require("random_rooms")
 
 print("Attempting to set the map components")
 tileSheetAPI.Load("rsc/dungeon_sheet.png", 32, 32)
-regionPagerAPI.SetOnCreate(randomRooms.Blank)
+--regionPagerAPI.SetOnCreate(randomRooms.Blank)
 
 print("Attempting to generate a dungeon")
 
-local hearts = {}
+io.write("Outer Mark 1\n")
+underdirk = require("underdirk")
+io.write("Outer Mark 2\n")
+underdirk.GenerateDungeon(0, 0, 300, 300, 500)
+io.write("Outer Mark 3\n")
 
-hearts[1] = randomRooms.GenerateDungeon(1, 1, 50, 50, 10)
-hearts[2] = randomRooms.GenerateDungeon(50, 1, 50, 50, 10)
+--local hearts = {}
 
-randomRooms.GenPath(hearts[1][1], hearts[1][2], hearts[2][1], hearts[2][2])
+--hearts[1] = randomRooms.GenerateDungeon(1, 1, 50, 50, 10)
+--hearts[2] = randomRooms.GenerateDungeon(50, 1, 50, 50, 10)
+
+--randomRooms.GenPath(hearts[1][1], hearts[1][2], hearts[2][1], hearts[2][2])
 
 print("setup.lua complete")
