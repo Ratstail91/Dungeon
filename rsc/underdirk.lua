@@ -31,6 +31,15 @@ local modtable = {}
 function modtable.Sqr(x) return x*x end
 function modtable.Dist(x, y, i, j) return math.sqrt(modtable.Sqr(x - i) + mapMaker.Sqr(y - j)) end
 
+function modtable.GThenSwitch(a, b)
+	--BUGFIX: This resolves a problem with the for loop and iterating through paths, ensuring that they iterate upwards
+	if a > b then
+		return b, a
+	else
+		return a, b
+	end
+end
+
 --tile macros, mapped to the tilesheet "dungeon_sheet.png"
 modtable.wall		= 1
 modtable.open		= 2
@@ -86,7 +95,28 @@ function modtable.GenerateDungeon(x, y, w, h, n)
 		end
 	end
 
-	--TODO: connect the rooms with pathways
+	--connect the rooms with pathway representations
+	for i = 1, n do
+		--determine the centers AFTER shifting
+		rooms[i].centerX = rooms[i].x + math.floor(rooms[i].w / 2)
+		rooms[i].centerY = rooms[i].y + math.floor(rooms[i].h / 2)
+	end
+
+	for i = 1, n do
+		local closest = -1
+		local dist = 9999999999
+
+		--find the closest room to room[i]
+		for k = 1, n-1 do
+			local d = modtable.Dist(rooms[i].x, rooms[i].y, rooms[k].x, rooms[k].y)
+			if d < dist and i ~= k and rooms[k].target == -1 then
+				closest = k
+				dist = d
+			end
+		end
+
+		rooms[i].target = closest
+	end
 
 	--save the resulting rooms
 	for k = 1, n do
@@ -94,6 +124,13 @@ function modtable.GenerateDungeon(x, y, w, h, n)
 			for j = rooms[k].y, rooms[k].y + rooms[k].h do
 				regionPagerAPI.SetTile(i, j, 0, modtable.open)
 			end
+		end
+
+		--generate the paths
+		if rooms[k].target ~= -1 then
+			modtable.GenPath(rooms[k].centerX, rooms[k].centerY, rooms[rooms[k].target].centerX, rooms[rooms[k].target].centerY)
+		else
+			print("ERROR: -1 target found")
 		end
 	end
 end
@@ -104,7 +141,12 @@ function modtable.GenerateRoomObject(x, y, minW, minH, maxW, maxH)
 	obj.y = y
 	obj.w = math.random(minW, maxW)
 	obj.h = math.random(minH, maxH)
-	obj.prefab = false
+
+	--for passages
+--	obj.centerX = obj.x + math.floor(obj.w / 2)
+--	obj.centerY = obj.y + math.floor(obj.h / 2)
+	obj.target = -1
+
 	return obj
 end
 
@@ -190,5 +232,69 @@ function modtable.ShiftCollisions(lhs, rhs)
 	return retFlag
 end
 
+-------------------------
+--GenPath generates the longest path first, wich is why it's split into three parts
+-------------------------
+
+function modtable.GenPath(x1, y1, x2, y2)
+--	print("path with", x1, y1, x2, y2)
+	if math.abs(x2-x1) > math.abs(y2-y1) then
+		return modtable.GenPathX(x1, y1, x2, y2)
+	else
+		return modtable.GenPathY(x1, y1, x2, y2)
+	end
+end
+
+function modtable.GenPathX(x1, y1, x2, y2)
+	local x1s
+	local x2s
+	local y1s
+	local y2s
+
+	--BUGFIX
+	x1s, x2s = modtable.GThenSwitch(x1, x2)
+	y1s, y2s = modtable.GThenSwitch(y1, y2)
+
+	--generate a simple path between two coordinates, starting with cardinal X
+	for i = x1s, x2s do
+		regionPagerAPI.SetTile(i, y1, 0, modtable.open)
+--		io.write("x")
+	end
+
+	for j = y1s, y2s do
+		regionPagerAPI.SetTile(x2, j, 0, modtable.open)
+--		io.write("y")
+	end
+--	io.write("+\n")
+end
+
+function modtable.GenPathY(x1, y1, x2, y2)
+	local x1s
+	local x2s
+	local y1s
+	local y2s
+
+	--BUGFIX
+	x1s, x2s = modtable.GThenSwitch(x1, x2)
+	y1s, y2s = modtable.GThenSwitch(y1, y2)
+
+	--generate a simple path between two coordinates, starting with cardinal Y
+	for j = y1s, y2s do
+		regionPagerAPI.SetTile(x1, j, 0, modtable.open)
+--		io.write("y")
+	end
+
+--	io.write("(", y1, ",", y2, ")")
+
+	for i = x1s, x2s do
+		regionPagerAPI.SetTile(i, y2, 0, modtable.open)
+--		io.write("x")
+	end
+--	io.write("-\n")
+end
+
+-------------------------
 --return the resulting table
+-------------------------
+
 return modtable
