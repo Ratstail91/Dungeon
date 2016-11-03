@@ -9,7 +9,7 @@ Dungeon Generator, designed to create pseudorandom dungeons for D&D 5e.
 ## Planned Features
 
 * ~~Tile Placement~~
-* ~~Map Exports~~~
+* ~~Map Exports~~
 * GUI tile selection
 * Normal doors/secret doors
 * Terrain, inclines, declines, etc.
