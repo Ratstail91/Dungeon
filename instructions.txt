@@ -33,6 +33,9 @@ To load a new tile sheet from the scripts, type:
 Where fname is the filename of the tileset you wish to load, and w & h are the
 width and height of the tiles respectfully.
 
+Press CTRL-Q to save the map as a bitmap file. There is a maximum map size for
+this feature.
+
 There are a number of other vestigial features that are active, but unused in
 practice such as tile layers. These features may be used properly later.
 

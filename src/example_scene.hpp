@@ -30,6 +30,7 @@
 #include "region_pager_lua.hpp"
 #include "text_box.hpp"
 #include "text_field.hpp"
+#include "texture_util.hpp"
 #include "tile_sheet.hpp"
 #include "tile_sheet_api.hpp"
 
@@ -58,6 +59,8 @@ private:
 	void KeyDown(SDL_KeyboardEvent const& event) override;
 	void KeyUp(SDL_KeyboardEvent const& event) override;
 	void TextInput(SDL_TextInputEvent const& event) override;
+
+	void PublishMapScreen();
 
 	//camera
 	struct Camera {

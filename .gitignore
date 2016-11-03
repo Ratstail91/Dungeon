@@ -22,3 +22,6 @@ out/
 #Shell files
 *.bat
 *.sh
+
+#specific files
+screenshot.bmp

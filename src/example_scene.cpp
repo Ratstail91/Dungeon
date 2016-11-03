@@ -24,7 +24,9 @@
 //TODO: remove this
 #include "application.hpp"
 
+#include <algorithm>
 #include <iostream>
+#include <sstream>
 
 //TODO: have scripts work without c-style this parameters
 
@@ -214,6 +216,21 @@ void ExampleScene::MouseWheel(SDL_MouseWheelEvent const& event) {
 
 void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
 	//hotkeys
+	if (event.keysym.mod) {
+		switch(event.keysym.sym) {
+			case SDLK_s:
+				//save the map data
+			break;
+			case SDLK_q:
+				//publish the map data
+				PublishMapScreen();
+			break;
+		}
+
+		return;
+	}
+
+	//hotkeys, no recognized mods
 	switch(event.keysym.sym) {
 		case SDLK_ESCAPE:
 			QuitEvent();
@@ -254,4 +271,61 @@ void ExampleScene::KeyUp(SDL_KeyboardEvent const& event) {
 
 void ExampleScene::TextInput(SDL_TextInputEvent const& event) {
 	textField.PushText(GetRenderer(), inputFont, SDL_Color{255, 255, 255, 255}, std::string(event.text));
+}
+
+void ExampleScene::PublishMapScreen() {
+	//determine the width and height of the image file
+	int lowerX = 0, upperX = 0;
+	int lowerY = 0, upperY = 0;
+
+	std::for_each(regionPager.GetContainer()->begin(), regionPager.GetContainer()->end(), [&](Region& r) -> void {
+		if (r.GetX() < lowerX) {
+			lowerX = r.GetX();
+		}
+		if (r.GetY() < lowerY) {
+			lowerY = r.GetY();
+		}
+		if (r.GetX() > upperX) {
+			upperX = r.GetX();
+		}
+		if (r.GetY() > upperY) {
+			upperY = r.GetY();
+		}
+	});
+
+	int width = (upperX - lowerX + REGION_WIDTH) * tileSheet.GetClipW();
+	int height = (upperY - lowerY + REGION_HEIGHT) * tileSheet.GetClipH();
+
+	//make a texture
+	SDL_Texture* texture = SDL_CreateTexture(GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+
+	//check
+	if (!texture) {
+		std::ostringstream msg;
+		msg << "Failed to create a texture; " << SDL_GetError();
+		throw(std::runtime_error(msg.str()));
+	}
+
+	//render each region to the new texture
+	SDL_SetRenderTarget(GetRenderer(), texture);
+
+	for (auto& it : *regionPager.GetContainer()) {
+		tileSheet.DrawRegionTo(GetRenderer(), &it, lowerX * tileSheet.GetClipW(), lowerY * tileSheet.GetClipH(), 1, 1);
+	}
+
+	SDL_SetRenderTarget(GetRenderer(), nullptr);
+
+	//make surface from texture
+	SDL_Surface* surface = makeSurfaceFromTexture(GetRenderer(), texture);
+	SDL_DestroyTexture(texture);
+
+	//check
+	if (!surface) {
+		std::ostringstream msg;
+		msg << "Failed to create a surface; " << SDL_GetError();
+		throw(std::runtime_error(msg.str()));
+	}
+
+	//finally
+	SDL_SaveBMP(surface, "screenshot.bmp");
 }
