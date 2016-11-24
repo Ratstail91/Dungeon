@@ -43,6 +43,7 @@ If you would like to support the development of Dungeon, please consider becomin
 ## Using and Including
 
 * [Coolvetica Typeface](http://typodermicfonts.com/coolvetica/)
+* [LodePNG](http://lodev.org/lodepng/)
 
 ## Copyright
 

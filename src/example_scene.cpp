@@ -327,5 +327,6 @@ void ExampleScene::PublishMapScreen() {
 	}
 
 	//finally
-	SDL_SaveBMP(surface, "screenshot.bmp");
+	int ret = savePNG(surface, "screenshot.png");
+	std::cout << "Save return code: " << ret << std::endl;
 }

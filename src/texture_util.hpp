@@ -23,3 +23,4 @@
 #include "SDL2/SDL.h"
 
 SDL_Surface* makeSurfaceFromTexture(SDL_Renderer* const renderer, SDL_Texture* texture);
+int savePNG(SDL_Surface* surface, const char* fname);
