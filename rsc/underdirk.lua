@@ -107,7 +107,7 @@ function modtable.GenerateDungeon(x, y, w, h, n)
 		local dist = 9999999999
 
 		--find the closest room to room[i]
-		for k = 1, n-1 do
+		for k = 1, n do
 			local d = modtable.Dist(rooms[i].x, rooms[i].y, rooms[k].x, rooms[k].y)
 			if d < dist and i ~= k and rooms[k].target == -1 then
 				closest = k
@@ -133,6 +133,10 @@ function modtable.GenerateDungeon(x, y, w, h, n)
 			print("ERROR: -1 target found")
 		end
 	end
+
+	regionPagerAPI.ForEach(function(r)
+		print("Region: ", regionAPI.GetX(r), regionAPI.GetY(r))
+	end)
 end
 
 function modtable.GenerateRoomObject(x, y, minW, minH, maxW, maxH)
