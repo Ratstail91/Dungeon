@@ -52,6 +52,29 @@ modtable.stairswd	= 8
 modtable.stairssd	= 9
 modtable.stairsed	= 10
 
+--list of filters for finding door locations
+modtable.hfilters = {
+	--normal filter orientation
+	{modtable.open, modtable.open, modtable.open, modtable.wall, modtable.open, modtable.wall, -1, -1, -1},
+	{modtable.wall, modtable.open, modtable.open, modtable.wall, modtable.open, modtable.wall, -1, -1, -1},
+	{modtable.open, modtable.open, modtable.wall, modtable.wall, modtable.open, modtable.wall, -1, -1, -1},
+	--rotated 180 degrees
+	{-1, -1, -1, modtable.wall, modtable.open, modtable.wall, modtable.open, modtable.open, modtable.open},
+	{-1, -1, -1, modtable.wall, modtable.open, modtable.wall, modtable.open, modtable.open, modtable.wall},
+	{-1, -1, -1, modtable.wall, modtable.open, modtable.wall, modtable.wall, modtable.open, modtable.open}
+}
+
+modtable.vfilters = {
+	--90 degrees
+	{modtable.open, modtable.wall, -1, modtable.open, modtable.open, -1, modtable.open, modtable.wall, -1},
+	{modtable.open, modtable.wall, -1, modtable.open, modtable.open, -1, modtable.wall, modtable.wall, -1},
+	{modtable.wall, modtable.wall, -1, modtable.open, modtable.open, -1, modtable.open, modtable.wall, -1},
+	--270 degrees
+	{-1, modtable.wall, modtable.open, -1, modtable.open, modtable.open, -1, modtable.wall, modtable.open},
+	{-1, modtable.wall, modtable.wall, -1, modtable.open, modtable.open, -1, modtable.wall, modtable.open},
+	{-1, modtable.wall, modtable.open, -1, modtable.open, modtable.open, -1, modtable.wall, modtable.wall}
+}
+
 --blank backgrounds
 function modtable.Blank(r)
 	for i = 1, regionAPI.GetWidth(r) do
@@ -134,9 +157,39 @@ function modtable.GenerateDungeon(x, y, w, h, n)
 		end
 	end
 
+	--prep the arguments for the filter algorithm
+	local lowerX = 0
+	local upperX = 0
+	local lowerY = 0
+	local upperY = 0
 	regionPagerAPI.ForEach(function(r)
-		print("Region: ", regionAPI.GetX(r), regionAPI.GetY(r))
+		--mimicing the "publish" code
+		if (regionAPI.GetX(r) < lowerX) then lowerX = regionAPI.GetX(r) end
+		if (regionAPI.GetX(r) > upperX) then upperX = regionAPI.GetX(r) end
+		if (regionAPI.GetY(r) < lowerY) then lowerY = regionAPI.GetY(r) end
+		if (regionAPI.GetY(r) > upperY) then upperY = regionAPI.GetY(r) end
 	end)
+
+	--pass to the filter algorithm
+	modtable.MatchFilters(
+		lowerX+1, upperX+regionAPI.GetWidth()-2,
+		lowerY+1, upperY+regionAPI.GetHeight()-2,
+		modtable.hfilters,
+		function (i, j) regionPagerAPI.SetTile(i, j, 0, modtable.doorh) end
+	)
+
+	modtable.MatchFilters(
+		lowerX+1, upperX+regionAPI.GetWidth()-2,
+		lowerY+1, upperY+regionAPI.GetHeight()-2,
+		modtable.vfilters,
+		function (i, j) regionPagerAPI.SetTile(i, j, 0, modtable.doorv) end
+	)
+
+--	for i = lowerX+1, upperX+regionAPI.GetWidth()-2 do
+--		for j = lowerY+1, upperY+regionAPI.GetHeight()-2 do
+--			regionPagerAPI.GetTile(i, j, 0)
+--		end
+--	end
 end
 
 function modtable.GenerateRoomObject(x, y, minW, minH, maxW, maxH)
@@ -295,6 +348,33 @@ function modtable.GenPathY(x1, y1, x2, y2)
 --		io.write("x")
 	end
 --	io.write("-\n")
+end
+
+-------------------------
+--MatchFilters, for generating doors in correct places
+-------------------------
+
+function modtable.MatchFilters(lowerX, upperX, lowerY, upperY, filters, callback)
+	--for each potential location
+	for i = lowerX, upperX do
+		for j = lowerY, upperY do
+			--compare it to the filters
+			for _, f in pairs(filters) do
+				if (f[1] ~= -1 and f[1] ~= regionPagerAPI.GetTile(i-1, j-1, 0)) then goto continue end
+				if (f[2] ~= -1 and f[2] ~= regionPagerAPI.GetTile(i  , j-1, 0)) then goto continue end
+				if (f[3] ~= -1 and f[3] ~= regionPagerAPI.GetTile(i+1, j-1, 0)) then goto continue end
+				if (f[4] ~= -1 and f[4] ~= regionPagerAPI.GetTile(i-1, j  , 0)) then goto continue end
+				if (f[5] ~= -1 and f[5] ~= regionPagerAPI.GetTile(i  , j  , 0)) then goto continue end
+				if (f[6] ~= -1 and f[6] ~= regionPagerAPI.GetTile(i+1, j  , 0)) then goto continue end
+				if (f[7] ~= -1 and f[7] ~= regionPagerAPI.GetTile(i-1, j+1, 0)) then goto continue end
+				if (f[8] ~= -1 and f[8] ~= regionPagerAPI.GetTile(i  , j+1, 0)) then goto continue end
+				if (f[9] ~= -1 and f[9] ~= regionPagerAPI.GetTile(i+1, j+1, 0)) then goto continue end
+
+				callback(i, j)
+				::continue::
+			end
+		end
+	end
 end
 
 -------------------------
