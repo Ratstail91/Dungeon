@@ -75,6 +75,13 @@ modtable.vfilters = {
 	{-1, modtable.wall, modtable.open, -1, modtable.open, modtable.open, -1, modtable.wall, modtable.wall}
 }
 
+modtable.cornerfilters = {
+	{modtable.wall, modtable.wall, modtable.wall, -1, modtable.open, modtable.wall, modtable.wall, -1, modtable.wall},
+	{modtable.wall, modtable.wall, modtable.wall, modtable.wall, modtable.open, -1, modtable.wall, -1, modtable.wall},
+	{modtable.wall, -1, modtable.wall, modtable.wall, modtable.open, -1, modtable.wall, modtable.wall, modtable.wall},
+	{modtable.wall, -1, modtable.wall, -1, modtable.open, modtable.wall, modtable.wall, modtable.wall, modtable.wall}
+}
+
 --blank backgrounds
 function modtable.Blank(r)
 	for i = 1, regionAPI.GetWidth(r) do
@@ -183,6 +190,20 @@ function modtable.GenerateDungeon(x, y, w, h, n)
 		lowerY+1, upperY+regionAPI.GetHeight()-2,
 		modtable.vfilters,
 		function (i, j) regionPagerAPI.SetTile(i, j, 0, modtable.doorv) end
+	)
+
+	--correcting the "kink" doors
+	modtable.MatchFilters(
+		lowerX+1, upperX+regionAPI.GetWidth()-2,
+		lowerY+1, upperY+regionAPI.GetHeight()-2,
+		modtable.cornerfilters,
+		function (i, j)
+			print("Kink:", i, j)
+			if (regionPagerAPI.GetTile(i-1, j, 0) ~= modtable.wall) then regionPagerAPI.SetTile(i-1, j, 0, modtable.open) end
+			if (regionPagerAPI.GetTile(i+1, j, 0) ~= modtable.wall) then regionPagerAPI.SetTile(i+1, j, 0, modtable.open) end
+			if (regionPagerAPI.GetTile(i, j-1, 0) ~= modtable.wall) then regionPagerAPI.SetTile(i, j-1, 0, modtable.open) end
+			if (regionPagerAPI.GetTile(i, j+1, 0) ~= modtable.wall) then regionPagerAPI.SetTile(i, j+1, 0, modtable.open) end
+		end
 	)
 
 --	for i = lowerX+1, upperX+regionAPI.GetWidth()-2 do
