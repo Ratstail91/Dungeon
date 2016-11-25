@@ -24,7 +24,7 @@ print("Attempting to generate a dungeon")
 io.write("Outer Mark 1\n")
 underdirk = require("underdirk")
 io.write("Outer Mark 2\n")
-underdirk.GenerateDungeon(0, 0, 40, 40, 10)
+underdirk.GenerateDungeon(0, 0, 60, 60, 40)
 io.write("Outer Mark 3\n")
 
 --local hearts = {}

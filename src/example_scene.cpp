@@ -216,7 +216,7 @@ void ExampleScene::MouseWheel(SDL_MouseWheelEvent const& event) {
 
 void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
 	//hotkeys
-	if (event.keysym.mod) {
+	if (event.keysym.mod & KMOD_CTRL) {
 		switch(event.keysym.sym) {
 			case SDLK_s:
 				//save the map data
@@ -246,8 +246,8 @@ void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
 			else {
 				if (textField.GetText().length() > 0) {
 					luaL_dostring(luaState, textField.GetText().c_str());
-					textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{255, 255, 255, 255}, textField.GetText());
-					textField.SetText(GetRenderer(), inputFont, SDL_Color{255,255,255,255}, std::string(""));
+					textBox.PushLine(GetRenderer(), textboxFont, SDL_Color{0, 255, 0, 255}, textField.GetText());
+					textField.SetText(GetRenderer(), inputFont, SDL_Color{0, 255, 0, 255}, std::string(""));
 				}
 				textField.SetFocus(false);
 				SDL_StopTextInput();
@@ -260,7 +260,7 @@ void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
 		case SDLK_BACKSPACE:
 			//easier than mucking about with SDL_TextEditEvent
 			if (textField.GetFocus()) {
-				textField.PopChars(GetRenderer(), inputFont, SDL_Color{255, 255, 255, 255}, 1);
+				textField.PopChars(GetRenderer(), inputFont, SDL_Color{0, 255, 0, 255}, 1);
 			}
 	}
 }
@@ -270,7 +270,7 @@ void ExampleScene::KeyUp(SDL_KeyboardEvent const& event) {
 }
 
 void ExampleScene::TextInput(SDL_TextInputEvent const& event) {
-	textField.PushText(GetRenderer(), inputFont, SDL_Color{255, 255, 255, 255}, std::string(event.text));
+	textField.PushText(GetRenderer(), inputFont, SDL_Color{0, 255, 0, 255}, std::string(event.text));
 }
 
 void ExampleScene::PublishMapScreen() {

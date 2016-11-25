@@ -11,7 +11,7 @@ Dungeon Generator, designed to create pseudorandom dungeons for D&D 5e.
 * ~~Tile Placement~~
 * ~~Map Exports~~
 * GUI tile selection
-* Normal doors/secret doors
+* ~~Normal doors/secret doors~~
 * Terrain, inclines, declines, etc.
 * Item placement
 * Monster placement
