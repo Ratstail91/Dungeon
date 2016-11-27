@@ -99,7 +99,7 @@ function modtable.GenerateDungeon(x, y, w, h, n)
 
 	--basic rooms
 	for i = 1, n do
-		rooms[i] = modtable.GenerateRoomObject(math.random(x, x+w), math.random(y, y+w), 3, 3, 10, 10)
+		rooms[i] = modtable.GenerateRoomObject(math.random(x, x+w), math.random(y, y+w), 2, 2, 6, 6)
 	end
 
 	--TODO: prefab rooms
