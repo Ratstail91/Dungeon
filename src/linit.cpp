@@ -37,6 +37,7 @@
 #include "lua.hpp"
 
 #include "cursor_api.hpp"
+#include "hash.hpp"
 #include "region_api.hpp"
 #include "region_pager_api.hpp"
 #include "tile_sheet_api.hpp"
@@ -60,6 +61,7 @@ static const luaL_Reg loadedlibs[] = {
 //these libs are preloaded and must be required before used
 static const luaL_Reg preloadedlibs[] = {
 	{CURSOR_API, openCursorAPI},
+	{HASH_API, openHashAPI},
 	{TURTLEMAP_REGION_API, openRegionAPI},
 	{TURTLEMAP_REGION_PAGER_API, openRegionPagerAPI},
 	{TURTLEMAP_TILE_SHEET_API, openTileSheetAPI},
