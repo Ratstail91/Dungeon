@@ -29,7 +29,7 @@ local modtable = {}
 --
 --utility functions
 function modtable.Sqr(x) return x*x end
-function modtable.Dist(x, y, i, j) return math.sqrt(modtable.Sqr(x - i) + mapMaker.Sqr(y - j)) end
+function modtable.Dist(x, y, i, j) return math.sqrt(modtable.Sqr(x - i) + modtable.Sqr(y - j)) end
 
 function modtable.GThenSwitch(a, b)
 	--BUGFIX: This resolves a problem with the for loop and iterating through paths, ensuring that they iterate upwards
