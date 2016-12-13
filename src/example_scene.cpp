@@ -52,8 +52,8 @@ ExampleScene::ExampleScene(lua_State* L) {
 	lua_setglobal(luaState, CURSOR_NAME);
 
 	//run the startup script
-	if (luaL_dofile(luaState, "rsc/setup.lua")) {
-		throw(std::runtime_error("Failed to run rsc/setup.lua"));
+	if (luaL_dofile(luaState, "scr/setup.lua")) {
+		throw(std::runtime_error("Failed to run scr/setup.lua"));
 	}
 
 	//setup the fonts

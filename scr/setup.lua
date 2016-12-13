@@ -3,7 +3,7 @@ print("beginning setup.lua")
 math.randomseed(os.time())
 
 print("package path")
-package.path = package.path .. ";rsc/?.lua"
+package.path = package.path .. ";scr/?.lua"
 
 print("APIs")
 cursorAPI = require("cursor")
@@ -12,21 +12,25 @@ regionPagerAPI = require("region_pager")
 tileSheetAPI = require("tile_sheet")
 
 print("map generators")
-mapMaker = require("map_maker")
+--mapMaker = require("map_maker")
 --randomRooms = require("random_rooms")
+--underdirk = require("underdirk")
+infinity = require("infinity_generator")
+
 
 print("Attempting to set the map components")
-tileSheetAPI.Load("rsc/dungeon_sheet.png", 32, 32)
+tileSheetAPI.Load("rsc/overworld.png", 32, 32)
 --regionPagerAPI.SetOnCreate(randomRooms.Blank)
 
 print("Attempting to generate a dungeon")
 
-io.write("Outer Mark 1\n")
-underdirk = require("underdirk")
-io.write("Outer Mark 2\n")
-underdirk.GenerateDungeon(0, 0, 30, 30, 15)
-io.write("Outer Mark 3\n")
+--METHOD 3
+regionPagerAPI.SetOnCreate(infinity.Blank)
 
+--METHOD 2
+--underdirk.GenerateDungeon(0, 0, 30, 30, 15)
+
+--METHOD 1
 --local hearts = {}
 
 --hearts[1] = randomRooms.GenerateDungeon(1, 1, 50, 50, 10)
