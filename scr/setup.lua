@@ -15,30 +15,18 @@ print("save format")
 saveFormat = require("save_format")
 
 print("map generators")
---mapMaker = require("map_maker")
---randomRooms = require("random_rooms")
---underdirk = require("underdirk")
---infinity = require("infinity_generator")
 
+--mapped to "dungeon_sheet.png"
 print("Attempting to set the map components")
 tileSheetAPI.Load("rsc/dungeon_sheet.png", 32, 32)
---regionPagerAPI.SetOnCreate(randomRooms.Blank)
 
---print("Attempting to generate a dungeon")
-
---METHOD 3
---regionPagerAPI.SetOnCreate(infinity.Blank)
-
---METHOD 2
---underdirk.GenerateDungeon(0, 0, 30, 30, 15)
-
---METHOD 1
---local hearts = {}
-
---hearts[1] = randomRooms.GenerateDungeon(1, 1, 50, 50, 10)
---hearts[2] = randomRooms.GenerateDungeon(50, 1, 50, 50, 10)
-
---randomRooms.GenPath(hearts[1][1], hearts[1][2], hearts[2][1], hearts[2][2])
+regionPagerAPI.SetOnCreate(function(r)
+	for i = 1, regionAPI.GetWidth(r) do
+		for j = 1, regionAPI.GetHeight(r) do
+			regionAPI.SetTile(r, i, j, 1, 1)
+		end
+	end
+end)
 
 --usability
 function save(arg)
