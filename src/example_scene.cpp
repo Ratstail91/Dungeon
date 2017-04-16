@@ -31,9 +31,6 @@
 //TODO: have scripts work without c-style this parameters
 
 ExampleScene::ExampleScene(lua_State* L) {
-	//load the defaults
-	tileSheet.Load(GetRenderer(), "rsc/overworld.png", 32, 32);
-
 	//setup the lua state
 	luaState = L;
 	regionPager.SetLuaState(luaState);
@@ -110,14 +107,6 @@ void ExampleScene::FrameEnd() {
 }
 
 void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
-	//DEBUG: force the tiles into existance
-	//TODO: add camera.screenWidth
-//	for (int i = camera.x; i < camera.x + screenWidth / camera.zoom; i += tileSheet.GetClipW()) {
-//		for (int j = camera.y; j < camera.y + screenHeight / camera.zoom; j += tileSheet.GetClipH()) {
-//			regionPager.GetRegion(i / tileSheet.GetClipW(), j / tileSheet.GetClipH());
-//		}
-//	}
-
 	//draw the map
 	for (auto& it : *regionPager.GetContainer()) {
 		tileSheet.DrawRegionTo(renderer, &it, camera.x, camera.y, camera.zoom, camera.zoom);
@@ -218,9 +207,16 @@ void ExampleScene::KeyDown(SDL_KeyboardEvent const& event) {
 	//hotkeys
 	if (event.keysym.mod & KMOD_CTRL) {
 		switch(event.keysym.sym) {
+			case SDLK_l:
+				//save the map data
+				luaL_dostring(luaState, "load()");
+			break;
+
 			case SDLK_s:
 				//save the map data
+				luaL_dostring(luaState, "save()");
 			break;
+
 			case SDLK_q:
 				//publish the map data
 				PublishMapScreen();
