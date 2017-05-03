@@ -48,6 +48,9 @@ ExampleScene::ExampleScene(lua_State* L) {
 	lua_pushlightuserdata(luaState, &cursor);
 	lua_setglobal(luaState, CURSOR_NAME);
 
+	lua_pushlightuserdata(luaState, &markerManager);
+	lua_setglobal(luaState, MARKER_MANAGER_NAME);
+
 	//run the startup script
 	if (luaL_dofile(luaState, "scr/setup.lua")) {
 		throw(std::runtime_error("Failed to run scr/setup.lua"));
@@ -67,11 +70,14 @@ ExampleScene::ExampleScene(lua_State* L) {
 	textBox.SetY(screenHeight - 36 - 12*6);
 
 	//debugging
-	//...
+	markerManager.SetFont(textboxFont);
 }
 
 ExampleScene::~ExampleScene() {
 	//wipe the variables from the lua state
+	lua_pushnil(luaState);
+	lua_setglobal(luaState, MARKER_MANAGER_NAME);
+
 	lua_pushnil(luaState);
 	lua_setglobal(luaState, REGION_PAGER_NAME);
 
@@ -111,6 +117,9 @@ void ExampleScene::RenderFrame(SDL_Renderer* renderer) {
 	for (auto& it : *regionPager.GetContainer()) {
 		tileSheet.DrawRegionTo(renderer, &it, camera.x, camera.y, camera.zoom, camera.zoom);
 	}
+
+	//draw the markers
+	markerManager.DrawTo(renderer, camera.x, camera.y, camera.zoom, camera.zoom);
 
 	//draw the terminal
 	textField.DrawTo(renderer);
@@ -308,6 +317,8 @@ void ExampleScene::PublishMapScreen() {
 	for (auto& it : *regionPager.GetContainer()) {
 		tileSheet.DrawRegionTo(GetRenderer(), &it, lowerX * tileSheet.GetClipW(), lowerY * tileSheet.GetClipH(), 1, 1);
 	}
+
+	markerManager.DrawTo(GetRenderer(), lowerX * tileSheet.GetClipW(), lowerY * tileSheet.GetClipH(), 1, 1);
 
 	SDL_SetRenderTarget(GetRenderer(), nullptr);
 

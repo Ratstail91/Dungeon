@@ -10,6 +10,7 @@ cursorAPI = require("cursor")
 regionAPI = require("region")
 regionPagerAPI = require("region_pager")
 tileSheetAPI = require("tile_sheet")
+markerManager = require("marker_manager")
 
 print("save format")
 saveFormat = require("save_format")

@@ -26,6 +26,8 @@
 #include "cursor.hpp"
 #include "cursor_api.hpp"
 #include "image.hpp"
+#include "marker_manager.hpp"
+#include "marker_manager_api.hpp"
 #include "region_pager_api.hpp"
 #include "region_pager_lua.hpp"
 #include "text_box.hpp"
@@ -70,6 +72,9 @@ private:
 
 	//selection
 	Cursor cursor;
+
+	//markers
+	MarkerManager markerManager;
 
 	//test members
 	lua_State* luaState = nullptr;
