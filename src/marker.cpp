@@ -19,36 +19,28 @@
  * 3. This notice may not be removed or altered from any source
  * distribution.
 */
-#pragma once
-
 #include "marker.hpp"
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
+int Marker::SetX(int i) {
+	return x = i;
+}
 
-#include <functional>
-#include <list>
+int Marker::GetX() const {
+	return x;
+}
 
-class MarkerManager {
-public:
-	MarkerManager() = default;
-	~MarkerManager();
+int Marker::SetY(int i) {
+	return y = i;
+}
 
-	TTF_Font* SetFont(TTF_Font* font);
-	TTF_Font* GetFont() const;
+int Marker::GetY() const {
+	return y;
+}
 
-	Marker* CreateMarker();
+std::string Marker::SetText(std::string s) {
+	return text = s;
+}
 
-	void ForEach(std::function<void(Marker*)> lambda);
-	void RemoveIf(std::function<bool(Marker*)> lambda);
-	void RemoveAll();
-
-	int Size();
-
-	//render
-	void DrawTo(SDL_Renderer* const renderer, int camX, int camY, double scaleX = 1.0, double scaleY = 1.0);
-
-private:
-	std::list<Marker*> markerList;
-	TTF_Font* font = nullptr;
-};
+std::string Marker::GetText() const {
+	return text;
+}

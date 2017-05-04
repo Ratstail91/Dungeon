@@ -38,6 +38,7 @@
 
 #include "cursor_api.hpp"
 #include "hash.hpp"
+#include "marker_api.hpp"
 #include "marker_manager_api.hpp"
 #include "region_api.hpp"
 #include "region_pager_api.hpp"
@@ -63,6 +64,7 @@ static const luaL_Reg loadedlibs[] = {
 static const luaL_Reg preloadedlibs[] = {
 	{CURSOR_API, openCursorAPI},
 	{HASH_API, openHashAPI},
+	{MARKER_API, openMarkerAPI},
 	{MARKER_MANAGER_API, openMarkerManagerAPI},
 	{TURTLEMAP_REGION_API, openRegionAPI},
 	{TURTLEMAP_REGION_PAGER_API, openRegionPagerAPI},

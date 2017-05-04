@@ -21,34 +21,24 @@
 */
 #pragma once
 
-#include "marker.hpp"
+#include <string>
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
-
-#include <functional>
-#include <list>
-
-class MarkerManager {
+class Marker {
 public:
-	MarkerManager() = default;
-	~MarkerManager();
+	Marker() = default;
+	~Marker() = default;
 
-	TTF_Font* SetFont(TTF_Font* font);
-	TTF_Font* GetFont() const;
+	int SetX(int i);
+	int GetX() const;
 
-	Marker* CreateMarker();
+	int SetY(int i);
+	int GetY() const;
 
-	void ForEach(std::function<void(Marker*)> lambda);
-	void RemoveIf(std::function<bool(Marker*)> lambda);
-	void RemoveAll();
-
-	int Size();
-
-	//render
-	void DrawTo(SDL_Renderer* const renderer, int camX, int camY, double scaleX = 1.0, double scaleY = 1.0);
+	std::string SetText(std::string s);
+	std::string GetText() const;
 
 private:
-	std::list<Marker*> markerList;
-	TTF_Font* font = nullptr;
+	int x = 0;
+	int y = 0;
+	std::string text;
 };

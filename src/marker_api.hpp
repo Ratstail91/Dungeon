@@ -21,34 +21,8 @@
 */
 #pragma once
 
-#include "marker.hpp"
+#include "lua.hpp"
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
-
-#include <functional>
-#include <list>
-
-class MarkerManager {
-public:
-	MarkerManager() = default;
-	~MarkerManager();
-
-	TTF_Font* SetFont(TTF_Font* font);
-	TTF_Font* GetFont() const;
-
-	Marker* CreateMarker();
-
-	void ForEach(std::function<void(Marker*)> lambda);
-	void RemoveIf(std::function<bool(Marker*)> lambda);
-	void RemoveAll();
-
-	int Size();
-
-	//render
-	void DrawTo(SDL_Renderer* const renderer, int camX, int camY, double scaleX = 1.0, double scaleY = 1.0);
-
-private:
-	std::list<Marker*> markerList;
-	TTF_Font* font = nullptr;
-};
+#define MARKER_NAME "_marker"
+#define MARKER_API "marker"
+LUAMOD_API int openMarkerAPI(lua_State* L);
