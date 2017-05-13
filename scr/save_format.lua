@@ -25,6 +25,9 @@
 local regionAPI = require("region")
 local regionPagerAPI = require("region_pager")
 
+local markerAPI = require("marker")
+local markerManagerAPI = require("marker_manager")
+
 local modtable = {}
 
 function modtable.SaveAll(fname)
@@ -32,8 +35,8 @@ function modtable.SaveAll(fname)
 
 	regionPagerAPI.ForEach(function(r)
 		--metadata
-		fhandle:write(regionAPI.GetX(r), " ")
-		fhandle:write(regionAPI.GetY(r), " ")
+		fhandle:write(regionAPI.GetX(r), "\n")
+		fhandle:write(regionAPI.GetY(r), "\n")
 
 		--tile data
 		for k = 1, regionAPI.GetDepth(r) do
@@ -44,13 +47,32 @@ function modtable.SaveAll(fname)
 			end
 		end
 
+		fhandle:write("\n")
+
 		--solid data
 		for j = 1, regionAPI.GetHeight(r) do
 			for i = 1, regionAPI.GetWidth(r) do
 				fhandle:write(regionAPI.GetSolid(r, i, j) and "1" or "0", " ")
 			end
 		end
+
+		fhandle:write("\n")
 	end)
+
+	--markers
+	fhandle:write("markers\n")
+
+	local markers = table.pack(markerManagerAPI.Find(function() return true end))
+
+	for _, m in pairs(markers) do
+		if type(m) ~= "userdata" then
+			break
+		end
+
+		fhandle:write(markerAPI.GetX(m), " ")
+		fhandle:write(markerAPI.GetY(m), " ")
+		fhandle:write(markerAPI.GetText(m), "\n")
+	end
 
 	fhandle:close()
 end
@@ -59,15 +81,17 @@ function  modtable.LoadAll(fname)
 	local fhandle = io.open(fname, "r")
 
 	regionPagerAPI.UnloadAll()
+	markerManagerAPI.RemoveAll() --TODO: naming conventions need to match better
 
 	while true do
 		--metadata
-		local x = fhandle:read("n")
-		local y = fhandle:read("n")
+		local x = fhandle:read()
 
-		if x == nil or y == nil then
+		if x == nil or x == "markers" then
 			break
 		end
+
+		local y = fhandle:read()
 
 		local r = regionPagerAPI.CreateRegion(x, y)
 		--tile data
@@ -85,7 +109,28 @@ function  modtable.LoadAll(fname)
 				regionAPI.SetSolid(r, i, j, fhandle:read("n") and true or false)
 			end
 		end
+
+		--eat the last blank space
+		fhandle:read()
+		--TODO: a much nicer save format
 	end
+
+	--markers
+	while true do
+		local x = fhandle:read("n")
+		local y = fhandle:read("n")
+		local t = fhandle:read()
+
+		if x == nil or y == nil or t == nil then
+			break
+		end
+
+		local m = markerManagerAPI.Create()
+		markerAPI.SetX(m, x)
+		markerAPI.SetY(m, y)
+		markerAPI.SetText(m, t)
+	end
+
 	fhandle:close()
 end
 

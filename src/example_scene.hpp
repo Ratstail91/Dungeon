@@ -86,6 +86,7 @@ private:
 	//text inputs
 	TTF_Font* inputFont = nullptr;
 	TTF_Font* textboxFont = nullptr;
+	TTF_Font* markerFont = nullptr;
 	TextField textField;
 	TextBox textBox;
 };

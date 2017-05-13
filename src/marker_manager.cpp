@@ -21,6 +21,8 @@
 */
 #include "marker_manager.hpp"
 
+#include "render_text_texture.hpp"
+
 #include <algorithm>
 
 MarkerManager::~MarkerManager() {
@@ -69,5 +71,15 @@ int MarkerManager::Size() {
 }
 
 void MarkerManager::DrawTo(SDL_Renderer* const renderer, int camX, int camY, double scaleX, double scaleY) {
-	//TODO: incomplete
+	std::for_each(markerList.begin(), markerList.end(), [&](Marker* marker) -> void {
+		//prevent an empty texture throwing an error
+		if (marker->GetText().size() == 0) {
+			return;
+		}
+
+		renderTextDirect(renderer, font, SDL_Color{0, 255, 0, 255}, marker->GetText(),
+			(marker->GetX() - camX) * scaleX,
+			(marker->GetY() - camY) * scaleY
+		);
+	});
 }

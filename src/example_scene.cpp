@@ -59,6 +59,7 @@ ExampleScene::ExampleScene(lua_State* L) {
 	//setup the fonts
 	inputFont = TTF_OpenFont("rsc/coolvetica rg.ttf", 24);
 	textboxFont = TTF_OpenFont("rsc/coolvetica rg.ttf", 12);
+	markerFont = TTF_OpenFont("rsc/coolvetica rg.ttf", 36);
 
 	if (!inputFont || !textboxFont) {
 		throw(std::runtime_error("Failed to load a font"));
@@ -70,7 +71,7 @@ ExampleScene::ExampleScene(lua_State* L) {
 	textBox.SetY(screenHeight - 36 - 12*6);
 
 	//debugging
-	markerManager.SetFont(textboxFont);
+	markerManager.SetFont(markerFont);
 }
 
 ExampleScene::~ExampleScene() {
@@ -94,6 +95,7 @@ ExampleScene::~ExampleScene() {
 	//close the APIs
 	TTF_CloseFont(inputFont);
 	TTF_CloseFont(textboxFont);
+	TTF_CloseFont(markerFont);
 }
 
 //-------------------------
