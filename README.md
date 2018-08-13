@@ -4,7 +4,7 @@ Dungeon Generator, designed to create pseudorandom dungeons for D&D 5e.
 
 ## Releases
 
-* The most recent stable build for Windows can be found [here](https://dl.dropboxusercontent.com/u/46669050/Dungeon-win.rar).
+* The most recent stable build for Windows can be found [here](https://www.dropbox.com/s/iyc8toy2qno6qii/Dungeon-win.rar).
 
 ## Planned Features
 
